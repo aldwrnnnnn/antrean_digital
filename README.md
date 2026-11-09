@@ -1,89 +1,127 @@
-# 📱 Antrean Digital
+# 🎫 Antrean Digital (Digital Queue System)
 
-Aplikasi sistem antrean digital modern berbasis **Flutter** untuk mengoptimalkan alur pelayanan publik dan manajemen loket. Aplikasi ini mengintegrasikan portal pengunjung untuk pengambilan nomor antrean, panel petugas loket untuk pemanggilan tiket, serta rekapitulasi riwayat pelayanan dalam satu antarmuka yang responsif.
+[![Flutter](https://img.shields.io/badge/Flutter-3.13%2B-blue?logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.0%2B-0175C2?logo=dart)](https://dart.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Author](https://img.shields.io/badge/Author-Gede%20Aldi%20Irawan-blueviolet)](https://github.com/aldwrnnnnn)
 
----
-
-## 🚀 Fitur Utama
-
-- **Portal Pengunjung (Visitor Screen)**
-  - Pengambilan tiket antrean digital berdasarkan kategori layanan yang dipilih.
-  - Estimasi durasi pelayanan dan waktu tunggu secara otomatis.
-  - Kartu tiket digital aktif (*Hero Card*) dan dialog rincian nomor tiket.
-  
-- **Kategori Layanan Fleksibel**
-  - **Layanan Umum & CS (Kode A)**: Pelayanan administrasi dan informasi umum.
-  - **Kasir & Pembayaran (Kode B)**: Pembayaran tagihan, retribusi, dan konfirmasi transaksi.
-  - **Konsultasi & Pengaduan (Kode C)**: Bimbingan teknis dan penyampaian aduan.
-
-- **Panel Petugas / Admin Loket (Counter Admin Screen)**
-  - Pemanggilan nomor antrean berikutnya (*Call Next*).
-  - Pemanggilan ulang (*Recall*) untuk pengunjung yang belum merespons.
-  - Penyelesaian antrean (*Mark Completed*) dan penanganan pengunjung tidak hadir (*Skip / No-Show*).
-  - Pilihan nomor loket aktif sesuai tugas masing-masing petugas.
-
-- **Riwayat & Monitoring Pelayanan (History Screen)**
-  - Pencatatan seluruh alur antrean (selesai, dilewati, maupun dibatalkan).
-  - Transparansi status dan waktu pelayanan tiket.
-
-- **Arsitektur Multi-Platform**
-  - Mendukung penyesuaian tata letak untuk perangkat Mobile (Android/iOS), Desktop (Windows/macOS/Linux), dan Web.
+**Antrean Digital** adalah aplikasi sistem manajemen antrean digital modern berbasis **Flutter**. Aplikasi ini dirancang untuk mempermudah alur pelayanan publik maupun komersial, menghubungkan pengunjung yang mengambil nomor antrean secara mandiri dengan petugas loket yang melayani pemanggilan secara terstruktur dan real-time.
 
 ---
 
-## 📂 Struktur Proyek
+## 🌟 Fitur Utama
+
+### 1. 👥 Antarmuka Pengunjung (Visitor Flow)
+- **Katalog Layanan & Informasi Real-Time**: Menampilkan kategori layanan (Layanan Umum & CS, Kasir & Pembayaran, Konsultasi & Pengaduan) lengkap dengan kuota antrean dan perkiraan waktu tunggu (*waiting time*).
+- **Pengambilan Tiket Mandiri**: Pengunjung dapat mengambil tiket dengan satu ketukan melalui dialog konfirmasi interaktif.
+- **Hero Card Tiket Aktif**: Menampilkan tiket yang sedang aktif dimiliki oleh pengunjung, status terkini (*Menunggu*, *Dipanggil*, *Sedang Dilayani*, *Selesai*), nomor loket tujuan, dan sisa orang di depan antrean.
+- **Digital Ticket Pass / QR**: Tampilan tiket digital interaktif yang siap ditunjukkan kepada petugas saat dipanggil.
+
+### 2. 🖥️ Panel Petugas / Loket (Counter Admin Flow)
+- **Manajemen Multi-Loket**: Petugas dapat memilih loket aktif (Loket 1, Loket 2, Loket 3, Ruang 4) dengan identitas petugas.
+- **Alur Kontrol Antrean Lengkap**:
+  - 📢 **Panggil Berikutnya (*Call Next*)**: Memanggil antrean terdepan pada kategori layanan loket tersebut.
+  - 🔁 **Panggil Ulang (*Recall*)**: Memanggil kembali nomor tiket yang sedang aktif.
+  - ⏱️ **Mulai Layani (*Serve*)**: Mengubah status antrean menjadi sedang dalam penanganan.
+  - ✅ **Selesaikan (*Complete*)**: Menyelesaikan proses pelayanan tiket dan memindahkan ke riwayat.
+
+### 3. 📋 Riwayat Pelayanan (Queue History)
+- Pencatatan seluruh alur antrean yang telah selesai maupun dibatalkan.
+- Informasi lengkap mengenai waktu pengambilan, waktu pemanggilan, petugas yang melayani, dan durasi penanganan.
+
+### 4. 🎨 Desain Modern & Responsif
+- Dibangun dengan panduan **Material 3** yang bersih dan elegan.
+- Tipografi modern menggunakan **Google Fonts**.
+- Tata letak responsif yang nyaman digunakan pada perangkat mobile (Android & iOS).
+
+---
+
+## 🏗️ Arsitektur & Struktur Proyek
+
+Aplikasi dikembangkan dengan pola arsitektur modular yang rapi:
 
 ```text
 lib/
-├── main.dart                  # Entry point aplikasi & inisialisasi state
-├── models/                    # Model data (QueueTicket, ServiceCategory)
-├── screens/                   # Tampilan antarmuka utama (Visitor, Admin, History)
-├── state/                     # Pengelolaan status antrean reaktif (QueueState)
-├── theme/                     # Konfigurasi palet warna, tipografi, dan ikon
-└── widgets/                   # Komponen UI modular (Hero Card, Dialog, Badge, Sheet)
+├── main.dart                  # Entry point aplikasi & inisialisasi state/locale
+├── models/
+│   ├── queue_ticket.dart      # Model data tiket antrean & enum status
+│   └── service_category.dart  # Model kategori layanan & konfigurasi loket
+├── screens/
+│   ├── main_navigation_screen.dart # Navigasi utama (BottomNavigationBar)
+│   ├── visitor_home_screen.dart    # Beranda pengunjung & ambil antrean
+│   ├── counter_admin_screen.dart   # Panel simulasi loket & pemanggilan
+│   └── history_screen.dart         # Halaman riwayat pelayanan
+├── state/
+│   └── queue_state.dart       # State management antrean (ChangeNotifier & Scope)
+├── theme/
+│   ├── app_colors.dart        # Palet warna konsisten
+│   ├── app_icons.dart         # Pemetaan ikon sistem
+│   └── app_theme.dart         # Konfigurasi ThemeData Material 3
+└── widgets/
+    ├── active_ticket_hero_card.dart  # Kartu banner tiket aktif pengguna
+    ├── digital_ticket_dialog.dart    # Modal dialog detail tiket digital
+    ├── service_category_card.dart    # Kartu pemilihan kategori layanan
+    ├── status_badge.dart             # Indikator status tiket (Waiting/Called/dll.)
+    └── take_ticket_bottom_sheet.dart # Bottom sheet konfirmasi ambil nomor
 ```
 
 ---
 
-## 🛠️ Prasyarat & Cara Menjalankan
+## 🚀 Cara Menjalankan Proyek
 
-1. **Prasyarat**:
-   - Flutter SDK (versi >= 3.0.0)
-   - Dart SDK
-   - Editor (VS Code / Android Studio)
+### Prasyarat
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (versi 3.13.5 atau lebih baru)
+- [Dart SDK](https://dart.dev/get-dart)
+- Android Studio / VS Code dengan ekstensi Flutter & Dart
+- Emulator Android / iOS atau perangkat fisik
 
-2. **Langkah Instalasi**:
+### Langkah Instalasi
+
+1. **Clone Repositori**:
    ```bash
-   # Clone repositori
    git clone https://github.com/aldwrnnnnn/antrean_digital.git
    cd antrean_digital
+   ```
 
-   # Unduh dependencies
+2. **Pasang Dependensi**:
+   ```bash
    flutter pub get
+   ```
 
-   # Jalankan aplikasi di perangkat / emulator yang terhubung
+3. **Jalankan Aplikasi**:
+   ```bash
    flutter run
+   ```
+
+4. **Menjalankan Pengujian (Testing)**:
+   ```bash
+   flutter test
    ```
 
 ---
 
-## 🛡️ Hak Cipta, Lisensi & Kepemilikan (Proprietary Notice)
+## 📦 Dependensi Utama
 
-> **PEMBERITAHUAN HAK CIPTA & KEPEMILIKAN EKSKLUSIF**
->
-> Proyek **Antrean Digital** ini sepenuhnya dirancang, dibangun, dan dimiliki oleh **[aldwrnnnnn](https://github.com/aldwrnnnnn) (Gede Aldi Irawan)**.
-
-```
-Copyright (c) 2026 aldwrnnnnn (Gede Aldi Irawan). All Rights Reserved.
-```
-
-- **Hak Eksklusif**: Seluruh kode sumber, desain tata letak UI/UX, arsitektur data, komponen logika, dan aset di dalam repositori ini merupakan hak cipta eksklusif dari pembuat asli (**aldwrnnnnn**).
-- **Larangan Plagiasi & Redistribusi**: Dilarang keras menyalin, menduplikasi, memodifikasi, mempublikasikan ulang, menjual, mengklaim sebagai karya sendiri, atau menggunakan materi proyek ini untuk portofolio pribadi pihak lain tanpa persetujuan tertulis resmi dari pemilik hak cipta.
-- Segala bentuk pelanggaran terhadap hak cipta ini dapat diproses sesuai dengan ketentuan hukum kekayaan intelektual yang berlaku.
+| Paket | Penggunaan |
+|---|---|
+| [`google_fonts`](https://pub.dev/packages/google_fonts) | Tipografi antarmuka modern |
+| [`intl`](https://pub.dev/packages/intl) | Format tanggal, waktu, dan lokalisasi `id_ID` |
+| [`cupertino_icons`](https://pub.dev/packages/cupertino_icons) | Asset ikon pendukung |
 
 ---
 
-**Author / Maintainer**:  
-👤 **aldwrnnnnn (Gede Aldi Irawan)**  
-🔗 GitHub: [@aldwrnnnnn](https://github.com/aldwrnnnnn)  
-📧 Email: `gedealdiirawan5@gmail.com`
+## 👤 Penulis & Pengembang (Author)
+
+Proyek ini dibuat dan dikembangkan sepenuhnya oleh:
+
+- **Nama**: Gede Aldi Irawan
+- **GitHub**: [@aldwrnnnnn](https://github.com/aldwrnnnnn)
+- **Email**: gedealdiirawan5@gmail.com
+
+---
+
+## 📄 Hak Cipta & Lisensi (Copyright & License)
+
+Hak Cipta © 2026 **Gede Aldi Irawan** ([@aldwrnnnnn](https://github.com/aldwrnnnnn)).
+
+Proyek ini dilindungi hak cipta dan didistribusikan di bawah lisensi resmi **MIT License**. Anda diizinkan untuk menggunakan, memodifikasi, dan mendistribusikan kode ini sesuai dengan ketentuan yang tertera pada berkas [LICENSE](LICENSE).
